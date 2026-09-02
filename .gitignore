@@ -1,0 +1,30 @@
+# 仮想環境（setup.sh が作る。開発機では本リポジトリの venv への symlink でもよい）
+.venv
+__pycache__/
+*.pyc
+
+# データと外部リポジトリ（tools/prepare_data.py と setup.sh が用意する）
+/data/
+/third_party/
+
+# 実験の出力
+/results/
+
+# ★checkpoints/ の同梱 ckpt は **追跡する**（23 本・61MB）。
+#   評価に要る model/cfg/step だけに小さくしてあるので入れて配れる
+#   （tools/install_checkpoints.py が入れる）。全部入りの 315MB は results/ 側に出る。
+#   ホスティング先に 50MB/ファイルの制限がある場合でも 1 本 2.7MB なので素で入る。
+!/checkpoints/
+!/checkpoints/*.pt
+
+# それ以外の場所の重み・配列は入れない
+*.npz
+!data/*_init_states.npz
+
+# 作業ファイル
+*.bak
+*.bak_*
+.DS_Store
+
+# スモークの排他ロック
+/results/.smoke.lock
