@@ -1,0 +1,74 @@
+# ★このファイルは tools/configs_from_ckpt.py が公開 ckpt の cfg から生成した。
+#   手で編集しない。元 ckpt: bc_transformer_spatial_s0（checkpoints/bc_transformer_spatial_s0.pt）
+#
+# 論文のベースラインは yaml を書かず --set の羅列で組まれていたので、
+# ckpt に保存された cfg をそのまま書き出すのが唯一確実な復元手段である。
+# ★手を入れているのは 3 か所だけ: paths.cache_root の先頭の "../" を剥がす /
+#   device を auto にする / model.type を現在の呼び名に直す。
+# 使い方:
+#   python benchmark/train.py --config configs/baseline_bc_transformer_spatial.yaml \
+#       --set train.run_name=<名前> train.seed=<S>
+seed: 0
+device: auto
+paths:
+  data_root: data/libero
+  cache_root: data/cache_l64
+preprocess:
+  suite: libero_spatial
+  vision_encoder: resnet18
+  agentview_grid: 2
+  agentview_pca_dim: 32
+  eye_pca_dim: 64
+  language_pca_dim: 64
+  pca_whiten: true
+  pca_fit_max_samples: 200000
+  language_fit_all_suites: true
+  proprio_dim: 9
+  action_dim: 7
+  image_batch: 256
+data:
+  suite: libero_spatial
+  tasks: null
+  max_demos: 0
+model:
+  vision_hidden: 128
+  vision_tau: 8
+  action_hidden: 128
+  action_tau_fast: 2
+  action_tau_slow: 5
+  pb_dim: 32
+  pb_hidden: 128
+  head_hidden: 256
+  vision_stride: 4
+  pb_inject: bias
+  action_tanh: true
+  lang_inject: additive
+  lang_top_dim: 64
+  action_head: gmm
+  fast_loop: true
+  gmm_k: 5
+  gmm_min_std: 0.01
+  type: bc_transformer
+  tf_dmodel: 144
+  tf_layers: 3
+  tf_heads: 4
+train:
+  burn_in: 20
+  loss_len: 50
+  batch_size: 32
+  lr: 0.0003
+  weight_decay: 0.0001
+  grad_clip: 1.0
+  total_steps: 50000
+  lambda_v: 1.0
+  lambda_q: 1.0
+  lambda_a: 1.0
+  noise_v: 0.05
+  noise_q: 0.02
+  ss_prob_max: 0.5
+  ss_ramp_steps: 20000
+  log_every: 50
+  ckpt_every: 10000
+  compile: false
+  seed: 0
+eval: {}

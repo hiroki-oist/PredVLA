@@ -1,0 +1,71 @@
+# PredVLA の long 設定。
+#
+# 構造（2026-07-31）
+#         T（共有上位、d=64、τ=16）← 言語
+#           ├→ V（d=256, τ=8）    出力 v̂(192)
+#           └→ A_up（d=256, τ=5）→ A_low（d=256, τ=2）  出力 q̂(9), â(7, GMM)
+#   ブリッジ  V → A : PB = W_pb·d^V（32 次元）
+#            A → V : 前 step の â と q̂（★観測ではなく予測値。生成モデルを保つ）
+#
+# 前段は既存と完全に同一（比較可能性のため）:
+#   凍結 ResNet18 + PCA → v 192 次元 / MiniLM + PCA → 言語 64 / q 9 / a 7
+paths:
+  cache_root: data/cache_l64_lg
+data:
+  suite: libero_10
+  tasks: null
+  max_demos: 0
+  T: 500
+  vision_stride: 4                   # 視覚は 5Hz
+
+model:
+  v_dim: 192
+  q_dim: 9
+  a_dim: 7
+  l_dim: 64
+  d: 256                             # V / A_up / A_low
+  d_top: 64                          # T（低次元にして視覚と行動の結合点にする）
+  r: 64                              # 自由変数 c の次元
+  pb_dim: 32                         # V → A のブリッジ
+  # ★Long は τ を広げる（2026-08-16 の掃引で確定）。
+  #   幅倍 k=2.0: τ_low=2 を固定し、そこからの幅を 2 倍 → 2 + 2(τ−2)
+  #   本線 τ(16/8/5/2) だと Long では ER 利得が +1.4 しか出ない（L15）。
+  #   k=2.0 で ER 48.0 ± 8.5、ΔER +23。比 = 平均エピソード長/τ_top ≒ 9.2 が最良。
+  tau_top: 30
+  tau_v: 14
+  tau_up: 8
+  tau_low: 2
+  head_hidden: 256
+  gmm_k: 5
+  # 0.01 だと NLL の下限が −3.69 まで落ちて c が全部吸収した（2026-07-31 実測）。
+  # 0.05 なら下限 −2.08。std が潰れて発散するのを止める。
+  gmm_min_std: 0.05
+  # 層ごとのメタプライア。LibPvrnn の w に対応（上位を大きく）。
+  # 前回 0.1/0.05/0.01 では comp が全体の 5% 未満で機能しなかったので上げる。
+  # スイープ実測（2026-07-31、4,000 step）: 5,2,2,1 の 0.01 倍が最良。
+  #   倍率  prior mse_a  posterior mse_a  比
+  #   0.01     0.1250        0.0168      7.4  ← 採用（prior は崩れず、幅が最大）
+  #   0.05     0.1230        0.0382      3.2
+  #   0.2      0.1296        0.0641      2.0
+  #   1.0      0.1325        0.0847      1.6
+  w_top: 0.05
+  w_v: 0.02
+  w_up: 0.02
+  w_low: 0.01
+
+train:
+  run_name: predvla_long
+  seed: 0
+  total_steps: 30000
+  batch_size: 32
+  lr: 6.0e-5                         # 重み
+  lr_c: 1.0e-2                       # 自由変数 c
+  weight_decay: 1.0e-4
+  lr_schedule: none
+  lambda_a: 1.0                      # 10 だと NLL が支配した（実測）
+  clip_w: 10.0                       # 重みの grad clip
+  clip_c: 100.0                      # c の grad clip（別に持つ。前回 c の勾配が支配した）
+  ckpt_every: 5000
+  log_every: 100
+  prior_every: 1000                  # prior 生成（c=ĉ）の誤差も測る間隔
+  compile: true

@@ -1,0 +1,50 @@
+[project]
+name = "predvla"
+version = "1.0.0"
+description = "PredVLA: a sub-million-parameter predictive-coding policy for language-conditioned robot manipulation"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+
+# ★Python 3.10 に固定している理由（3.11+ で動かないわけではないが未検証）:
+#   LIBERO が依存する robosuite 1.4.0 / mujoco 2.3.7 / robomimic 0.2.0 は
+#   3.10 までしかホイールが揃っておらず、Ubuntu 24.04 の既定 Python 3.12 では
+#   ソースビルドに落ちて失敗する。setup.sh は uv に 3.10 を取ってこさせる
+#   （システムの Python を触らないので 24.04 でもそのまま動く）。
+
+dependencies = [
+  # --- 学習・推論の本体 ---
+  # torch は setup.sh が CUDA / CPU の index を選んで先に入れる。ここは下限だけ。
+  "torch>=2.4",
+  "torchvision>=0.19",
+  "numpy>=1.24,<2",          # ★robosuite 1.4 / robomimic 0.2 が numpy 2 で壊れる
+  "h5py>=3.10",
+  "PyYAML>=6.0",
+  "packaging>=23",
+
+  # --- 凍結前段（ResNet18 + MiniLM + PCA）---
+  "scikit-learn>=1.3",       # PCA の当てはめ
+  "sentence-transformers>=2.2",   # MiniLM（言語）
+  "transformers>=4.30",
+  "pillow>=10",
+  "opencv-python>=4.8",
+  "einops>=0.7",
+
+  # --- LIBERO のシミュレータ ---
+  # ★これらは版を厳密に合わせる。robosuite の版が違うと成功判定が変わる。
+  "robosuite==1.4.0",
+  "robomimic==0.2.0",
+  "mujoco==2.3.7",
+  "bddl==3.6.0",
+  "easydict>=1.10",
+  "imageio>=2.30",
+  "imageio-ffmpeg>=0.4",
+]
+
+# libero 本体は PyPI に無いので third_party/LIBERO から editable で入れる。
+# setup.sh がやる（コミットも固定する）。
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools]
+packages = ["predvla", "src"]

@@ -1,0 +1,33 @@
+# 凍結前段（ResNet18 + MiniLM + PCA）でキャッシュを作るための設定。
+# ★論文の数値はこの設定で作ったキャッシュから出ている。1 つ変えると数値が動く。
+#
+# 1 フレームあたり
+#   v (192) = agentview を 2x2 に分けた 4 トークン × PCA 32 + eye_in_hand × PCA 64
+#   q (9)   = 関節 7 + グリッパ 2 を z 正規化（統計は学習データから）
+#   a (7)   = LIBERO の生の行動（[-1, 1]）
+#   l (64)  = PCA(MiniLM(指示文))。エピソード内で一定
+#
+# cache_root は tools/prepare_data.py が --profile ごとに差し替える（下のコメント参照）。
+
+seed: 0
+device: auto
+
+paths:
+  data_root: data/libero
+  cache_root: data/cache_l64        # ★prepare_data.py が上書きする
+
+preprocess:
+  suite: libero_spatial             # ★prepare_data.py が上書きする
+  vision_encoder: resnet18
+  agentview_grid: 2                 # 2x2 = 4 トークン
+  agentview_pca_dim: 32             # トークンごとに 512 -> 32（4 トークンで 128）
+  eye_pca_dim: 64                   # 512 -> 64      合計 v = 128 + 64 = 192
+  # ★言語は 64 次元。32 次元では最悪ペアの分離が 1/4 になり、タスクを取り違える
+  #   （2026-07 の実測。キャッシュ名の "l64" はこれを指す）。
+  language_pca_dim: 64              # 384 -> 64
+  pca_whiten: true
+  pca_fit_max_samples: 200000       # 視覚 PCA を当てるときの部分標本の上限
+  language_fit_all_suites: true     # 言語 PCA は全ベンチマークのタスク文で当てる
+  proprio_dim: 9
+  action_dim: 7
+  image_batch: 256

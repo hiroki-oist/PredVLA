@@ -1,0 +1,49 @@
+# はしご L2-s1: 側枝: L2 の視覚レートだけを 4 → 1（前向き経路は無いまま）
+#   libero_spatial / seed 1
+#   ★生成元 scripts/run_ladder.py（手で編集しない）
+#   ★評価は n_itr=0（自由変数 c を持たないので ER が定義できない）
+paths:
+  cache_root: data/cache_ps_sp
+data:
+  suite: libero_spatial
+  tasks: null
+  max_demos: 0
+  T: 200
+  vision_stride: 1
+model:
+  v_dim: 192
+  q_dim: 9
+  a_dim: 7
+  l_dim: 64
+  d: 256
+  d_top: 64
+  r: 64
+  pb_dim: 32
+  tau_top: 16
+  tau_v: 8
+  tau_up: 5
+  tau_low: 2
+  head_hidden: 256
+  gmm_k: 5
+  gmm_min_std: 0.05
+  w_top: 0.05
+  w_v: 0.02
+  w_up: 0.02
+  w_low: 0.01
+train:
+  run_name: ladder_L2-s1_spatial_s1
+  seed: 1
+  total_steps: 30000
+  batch_size: 32
+  lr: 6.0e-05
+  lr_c: 0.01
+  weight_decay: 0.0001
+  lr_schedule: none
+  lambda_a: 1.0
+  clip_w: 10.0
+  clip_c: 100.0
+  ckpt_every: 5000
+  log_every: 100
+  prior_every: 1000
+  compile: true
+  no_c: true
