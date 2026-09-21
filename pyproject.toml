@@ -1,5 +1,6 @@
 [project]
 name = "predvla"
+license = "MIT"
 version = "1.0.0"
 description = "PredVLA: a sub-million-parameter predictive-coding policy for language-conditioned robot manipulation"
 readme = "README.md"
