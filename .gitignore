@@ -4,8 +4,12 @@ __pycache__/
 *.pyc
 
 # データと外部リポジトリ（tools/prepare_data.py と setup.sh が用意する）
-/data/
-/third_party/
+# ★ディレクトリ自体は追跡し（.gitkeep）、中身だけ無視する。以前は開発機の絶対パスへの
+#   symlink をコミットしてしまい fresh clone で setup.sh が落ちた（2026-09-21 修正）。
+/data/*
+!/data/.gitkeep
+/third_party/*
+!/third_party/.gitkeep
 
 # 実験の出力
 /results/
