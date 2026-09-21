@@ -1,3 +1,17 @@
+<p align="center">
+  <a href="https://hiroki-oist.github.io/PredVLA/"><img src="docs/preview.gif" width="720" alt="PredVLA overview video (click for the full 90-second video with narration)"></a>
+</p>
+
+<h3 align="center">PredVLA: Predictive Sensorimotor Modeling for Sub-Million-Parameter Robot Manipulation</h3>
+<p align="center">Hiroki Sawada &nbsp;·&nbsp; Shunichi Kasahara</p>
+<p align="center">
+  <a href="https://arxiv.org/abs/2608.26673"><b>📄 Paper (arXiv:2608.26673)</b></a> &nbsp;·&nbsp;
+  <a href="https://hiroki-oist.github.io/PredVLA/"><b>🌐 Project page</b></a> &nbsp;·&nbsp;
+  <a href="https://hiroki-oist.github.io/PredVLA/predvla.mp4"><b>🎬 Video (90 s, MP4)</b></a>
+</p>
+
+---
+
 # PredVLA — Reproduction Repository
 
 This repository provides the code and instructions required to reproduce the training, evaluation, baselines, mechanism ladder, and ablation studies from:

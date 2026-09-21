@@ -1,3 +1,17 @@
+<p align="center">
+  <a href="https://hiroki-oist.github.io/PredVLA/"><img src="docs/preview.gif" width="720" alt="PredVLA 紹介動画（クリックでナレーション付き 90 秒版）"></a>
+</p>
+
+<h3 align="center">PredVLA: Predictive Sensorimotor Modeling for Sub-Million-Parameter Robot Manipulation</h3>
+<p align="center">Hiroki Sawada &nbsp;·&nbsp; Shunichi Kasahara</p>
+<p align="center">
+  <a href="https://arxiv.org/abs/2608.26673"><b>📄 論文（arXiv:2608.26673）</b></a> &nbsp;·&nbsp;
+  <a href="https://hiroki-oist.github.io/PredVLA/"><b>🌐 プロジェクトページ</b></a> &nbsp;·&nbsp;
+  <a href="https://hiroki-oist.github.io/PredVLA/predvla.mp4"><b>🎬 動画（90 秒, MP4）</b></a>
+</p>
+
+---
+
 # PredVLA — 再現用リポジトリ
 
 **PredVLA: Predictive Sensorimotor Modeling for Sub-Million-Parameter Robot Manipulation** の学習・評価・アブレーションを再現するためのリポジトリです。
