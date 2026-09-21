@@ -69,6 +69,10 @@ say ".venv を作る（Python ${PY_VERSION}）"
 # 既存が symlink（開発機で本リポジトリの venv を共有している場合）なら触らない
 if [ -L .venv ]; then
   echo "  .venv は symlink なのでそのまま使う -> $(readlink .venv)"
+elif [ -x .venv/bin/python ]; then
+  # 2 回目以降（apt パッケージを入れてやり直す等）は既存の .venv を使う。
+  # uv venv は既存ディレクトリがあると止まるので作り直さない（中身は下で上書きされる）。
+  echo "  既存の .venv を使う"
 else
   uv venv --python "${PY_VERSION}" .venv
 fi
