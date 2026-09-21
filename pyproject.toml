@@ -38,6 +38,10 @@ dependencies = [
   "easydict>=1.10",
   "imageio>=2.30",
   "imageio-ffmpeg>=0.4",
+  # LIBERO が import 時に読む（setup.sh は LIBERO を --no-deps で入れる）
+  "matplotlib>=3.5",
+  "cloudpickle>=2.1",
+  "gym==0.25.2",
 ]
 
 # libero 本体は PyPI に無いので third_party/LIBERO から editable で入れる。

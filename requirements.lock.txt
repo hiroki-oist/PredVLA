@@ -102,3 +102,15 @@ triton==3.7.1
 typer==0.27.0
 typing_extensions==4.16.0
 Werkzeug==3.1.8
+# --- LIBERO が import 時に要求する（setup.sh は LIBERO を --no-deps で入れるのでここで固定）---
+matplotlib==3.10.9
+cloudpickle==3.1.2
+gym==0.25.2
+gym-notices==0.1.0
+contourpy==1.3.2
+cycler==0.12.1
+fonttools==4.63.0
+kiwisolver==1.5.0
+pyparsing==3.3.2
+python-dateutil==2.9.0.post0
+six==1.17.0
