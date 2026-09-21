@@ -107,19 +107,21 @@ numpy<2
 .venv/bin/python tools/prepare_data.py --check
 ```
 
-### 推奨: 凍結特徴キャッシュを使用
+### 推奨: 同梱の凍結特徴キャッシュを使用
 
-配布された特徴キャッシュを `data/` 以下に配置してください。
+凍結特徴キャッシュ（LIBERO デモの ResNet18 + MiniLM + PCA 特徴、計 ≈870 MB）は **このリポジトリに同梱**しています（`data/` 以下）。`git clone` だけで学習と同梱 ckpt の評価ができます。
 
 ```text
 data/
-├── cache_l64/
+├── cache_l64/            # shared PCA basis (fit on libero_spatial demos); used for goal / object
 │   ├── libero_spatial/
 │   ├── libero_goal/
-│   └── libero_object/
-├── cache_ps_sp/
+│   ├── libero_object/
+│   ├── libero_10/
+│   └── libero_90/
+├── cache_ps_sp/          # per-suite refit; used for spatial
 │   └── libero_spatial/
-└── cache_l64_lg/
+└── cache_l64_lg/         # PCA refit on libero_10 demos; used for long
     └── libero_10/
 ```
 

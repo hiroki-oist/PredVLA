@@ -8,6 +8,10 @@ __pycache__/
 #   symlink をコミットしてしまい fresh clone で setup.sh が落ちた（2026-09-21 修正）。
 /data/*
 !/data/.gitkeep
+# ★凍結特徴キャッシュは同梱する（計 ≈870MB、1 ファイル最大 16MB）。無いと学習も ckpt の評価もできない
+!/data/cache_ps_sp/
+!/data/cache_l64/
+!/data/cache_l64_lg/
 /third_party/*
 !/third_party/.gitkeep
 
@@ -24,6 +28,7 @@ __pycache__/
 # それ以外の場所の重み・配列は入れない
 *.npz
 !data/*_init_states.npz
+!/data/cache_*/*.npz
 
 # 作業ファイル
 *.bak

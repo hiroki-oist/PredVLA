@@ -109,19 +109,21 @@ Check which data are currently available:
 .venv/bin/python tools/prepare_data.py --check
 ```
 
-### Recommended: Use the Precomputed Frozen Feature Cache
+### Recommended: Use the Bundled Frozen Feature Cache
 
-Place the distributed feature caches under `data/`:
+The precomputed frozen feature caches (ResNet18 + MiniLM + PCA features of the LIBERO demonstrations, ≈870 MB in total) are **included in this repository** under `data/`, so a plain `git clone` is enough to train and to evaluate the bundled checkpoints:
 
 ```text
 data/
-├── cache_l64/
+├── cache_l64/            # shared PCA basis (fit on libero_spatial demos); used for goal / object
 │   ├── libero_spatial/
 │   ├── libero_goal/
-│   └── libero_object/
-├── cache_ps_sp/
+│   ├── libero_object/
+│   ├── libero_10/
+│   └── libero_90/
+├── cache_ps_sp/          # per-suite refit; used for spatial
 │   └── libero_spatial/
-└── cache_l64_lg/
+└── cache_l64_lg/         # PCA refit on libero_10 demos; used for long
     └── libero_10/
 ```
 
