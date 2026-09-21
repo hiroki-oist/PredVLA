@@ -1,6 +1,6 @@
 # PredVLA — 再現用リポジトリ
 
-**PredVLA: A Sub-Million-Parameter Predictive-Coding Policy for Robot Manipulation** の学習・評価・アブレーションを再現するためのリポジトリです。
+**PredVLA: Predictive Sensorimotor Modeling for Sub-Million-Parameter Robot Manipulation** の学習・評価・アブレーションを再現するためのリポジトリです。
 
 PredVLA は、凍結した視覚・言語特徴（ResNet18 + MiniLM + PCA）を用いる、675,732 パラメータの階層的予測符号化ポリシーです。LIBERO の各スイート上で学習し、テスト時にはオンライン Error Regression (ER) により自由変数 `c` を更新します。
 

@@ -2,7 +2,7 @@
 
 This repository provides the code and instructions required to reproduce the training, evaluation, baselines, mechanism ladder, and ablation studies from:
 
-**PredVLA: A Sub-Million-Parameter Predictive-Coding Policy for Robot Manipulation**
+**PredVLA: Predictive Sensorimotor Modeling for Sub-Million-Parameter Robot Manipulation**
 
 PredVLA is a hierarchical predictive-coding policy with 675,732 trainable parameters. It operates on frozen visual and language features (ResNet18 + MiniLM + PCA) and performs online Error Regression (ER) at test time by optimizing the latent variable `c`.
 
