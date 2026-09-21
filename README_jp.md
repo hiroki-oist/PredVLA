@@ -49,8 +49,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ### セットアップ
 
 ```bash
-git clone https://github.com/CyberneticHumanity/PredVLA.git PredVLA_reproduce
-cd PredVLA_reproduce
+git clone https://github.com/hiroki-oist/PredVLA.git
+cd PredVLA
 
 bash setup.sh
 ```
