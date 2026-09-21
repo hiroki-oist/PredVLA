@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PredVLA — Predictive Sensorimotor Modeling for Sub-Million-Parameter Robot Manipulation</title>
+<meta name="description" content="PredVLA: a 0.68M-parameter language-conditioned predictive-coding policy for robot manipulation. 75.4% mean success on the four LIBERO suites; observations act only through prediction error.">
+<meta property="og:title" content="PredVLA — Predictive Sensorimotor Modeling for Sub-Million-Parameter Robot Manipulation">
+<meta property="og:description" content="A 0.68M-parameter predictive-coding policy. 75.4% mean success on LIBERO (four suites); 3.8× / 7.3× parameter-matched Transformer / LSTM baselines.">
+<meta property="og:image" content="https://hiroki-oist.github.io/PredVLA/thumb.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root { --bg:#F4F5F7; --card:#fff; --ink:#2B2F36; --ink2:#6B7280; --line:#D5D8DE; --red:#C8472F; --blue:#2F6DB5; }
+  * { box-sizing:border-box; }
+  html { color-scheme: light; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.6 Inter, "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; }
+  .wrap { max-width:1040px; margin:0 auto; padding:56px 24px 80px; }
+  header { text-align:center; margin-bottom:40px; }
+  h1 { font-size:clamp(28px,4vw,42px); line-height:1.2; margin:0 0 16px; letter-spacing:-.01em; text-wrap:balance; }
+  h1 .name { color:var(--red); }
+  .authors { font-size:20px; color:var(--ink2); margin:0 0 6px; }
+  .venue { color:var(--ink2); margin:0 0 22px; font-size:16px; }
+  .links { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .links a { display:inline-block; padding:10px 18px; border:1.5px solid var(--ink); border-radius:999px; color:var(--ink); text-decoration:none; font-weight:600; font-size:15px; background:var(--card); }
+  .links a:hover { background:var(--ink); color:#fff; }
+  .links a.primary { background:var(--red); border-color:var(--red); color:#fff; }
+  .links a.primary:hover { background:#a83a26; }
+  video { width:100%; border:1px solid var(--line); border-radius:10px; background:#000; display:block; }
+  .caption { color:var(--ink2); font-size:14.5px; margin:10px 4px 0; }
+  section { margin-top:56px; }
+  h2 { font-size:24px; margin:0 0 14px; letter-spacing:-.005em; }
+  h2 small { color:var(--ink2); font-weight:400; font-size:15px; margin-left:10px; }
+  p { margin:0 0 14px; max-width:78ch; }
+  .lead { font-size:19px; }
+  .kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:22px 0 6px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 18px 14px; }
+  .kpi b { display:block; font-size:34px; color:var(--red); line-height:1.1; font-variant-numeric:tabular-nums; }
+  .kpi span { color:var(--ink2); font-size:14px; }
+  figure { margin:22px 0 0; }
+  figure img { width:100%; border:1px solid var(--line); border-radius:10px; background:var(--card); display:block; }
+  figure figcaption { color:var(--ink2); font-size:14.5px; margin-top:10px; }
+  table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; font-size:15.5px; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  th, td { padding:10px 12px; text-align:right; border-bottom:1px solid var(--line); }
+  th:first-child, td:first-child { text-align:left; }
+  thead th { background:#EEF0F3; font-weight:600; color:var(--ink2); font-size:13.5px; text-transform:uppercase; letter-spacing:.04em; }
+  tr:last-child td { border-bottom:none; }
+  td.hl { color:var(--red); font-weight:700; }
+  .tablewrap { overflow-x:auto; }
+  pre { background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px 18px; overflow-x:auto; font-size:13.5px; line-height:1.5; }
+  .note { color:var(--ink2); font-size:14.5px; }
+  footer { margin-top:64px; color:var(--ink2); font-size:14px; text-align:center; border-top:1px solid var(--line); padding-top:22px; }
+  a { color:var(--blue); }
+  @media (max-width:720px) { .kpis { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1><span class="name">PredVLA</span>: Predictive Sensorimotor Modeling for Sub-Million-Parameter Robot Manipulation</h1>
+  <p class="authors">Hiroki Sawada &nbsp;·&nbsp; Shunichi Kasahara</p>
+  <p class="venue">arXiv preprint, August 2026</p>
+  <nav class="links">
+    <a class="primary" href="https://arxiv.org/abs/2608.26673">📄 Paper (arXiv:2608.26673)</a>
+    <a href="https://github.com/hiroki-oist/PredVLA">💻 Code &amp; checkpoints</a>
+    <a href="predvla.mp4">🎬 Video (MP4, 90 s)</a>
+    <a href="#bibtex">BibTeX</a>
+  </nav>
+</header>
+
+<video controls preload="metadata" poster="thumb.jpg" src="predvla.mp4"></video>
+<p class="caption">90-second overview. All footage is closed-loop rollouts of the released checkpoints on LIBERO; all numbers are from the paper.</p>
+
+<section>
+  <h2>TL;DR</h2>
+  <p class="lead">Compact robot policies can benefit substantially from <em>predictive sensorimotor modeling</em> rather than direct observation-to-action mapping. PredVLA takes only the language instruction as input, predicts its own visual features and proprioception, and lets observations influence its latent state <em>only</em> through prediction error — corrected online by error regression at every control step.</p>
+  <div class="kpis">
+    <div class="kpi"><b>0.68M</b><span>trainable parameters (675,732); frozen ResNet18 + MiniLM front end; no robot-data pretraining</span></div>
+    <div class="kpi"><b>75.4 %</b><span>mean success over the four LIBERO suites (86.9 % over the three short-horizon suites)</span></div>
+    <div class="kpi"><b>3.8× / 7.3×</b><span>the parameter-matched Transformer / LSTM behavior-cloning baselines (4-suite mean)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Abstract</h2>
+  <p>Large pretrained vision-language-action models achieve strong robot-manipulation performance, while compact alternatives have largely pursued efficiency by compressing the prevailing observation-to-action paradigm. We investigate whether predictive sensorimotor modeling can make more effective use of a limited parameter budget than direct observation-to-action mapping. We present PredVLA, a language-conditioned predictive-coding policy with only 0.68 million trainable network parameters and no robot-data pretraining. Its hierarchical recurrent dynamics predict visual features and proprioception, while observations influence latent state only through prediction-error-driven online inference. On LIBERO, PredVLA achieves an 86.9% mean success rate across the three short-horizon suites and 75.4% across all four suites. Under a controlled comparison using the same frozen front end, demonstrations, action decoder, and evaluation protocol, PredVLA achieves 3.7x and 7.4x the three-suite mean success rates of parameter-matched Transformer and LSTM behavior-cloning policies, respectively. A mechanism-by-mechanism transition to the recurrent behavior-cloning baseline shows that replacing the predictive pathway with direct observation input produces the largest single performance drop, accounting for approximately 70% of the endpoint gap. Further ablations identify distinct contributions from training-time latent inference, test-time error regression, hierarchical timescales, and sensory prediction-error channels. Together, these results support predictive sensorimotor modeling as a strong inductive bias for compact language-conditioned robot control.</p>
+</section>
+
+<section>
+  <h2>How it differs from behavior cloning</h2>
+  <figure>
+    <img src="fig_mechanism.png" alt="Conventional behavior cloning maps observation to action through an encoder and policy network. PredVLA takes only the language instruction as input, a recurrent latent state predicts vision and proprioception and emits the action; the observation enters only a comparison node whose prediction error feeds back into the latent state.">
+    <figcaption>Left: behavior cloning maps observations directly to actions. Right: PredVLA's only input is the language instruction; observations act only through the prediction error, which corrects the recurrent latent state online (error regression: 10 gradient steps on the latent free variables per control step, over a 40-step window).</figcaption>
+  </figure>
+  <figure>
+    <img src="fig1_architecture.png" alt="PredVLA architecture: frozen front end (MiniLM language, ResNet18 + PCA for two cameras, joint state) feeding a trainable predictive-coding RNN with layers T (tau 16), V (tau 8), A_up (tau 5), A_low (tau 2), each with free variables; outputs predicted vision, predicted proprioception and a GMM action; free energy E = lambda_v eps_v + lambda_q eps_q + complexity.">
+    <figcaption>Paper Fig. 1 — the hierarchical predictive-coding RNN (T τ=16, V τ=8, A<sub>up</sub> τ=5, A<sub>low</sub> τ=2) with free variables <em>c</em> on every layer, trained and inferred by minimising the free energy <em>E = λ<sub>v</sub>ε<sub>v</sub> + λ<sub>q</sub>ε<sub>q</sub> + complexity(c)</em>.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Results on LIBERO <small>success rate, %</small></h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Policy</th><th>Params</th><th>Spatial</th><th>Goal</th><th>Object</th><th>Long (LIBERO-10)</th><th>Mean (4)</th></tr></thead>
+    <tbody>
+      <tr><td><b>PredVLA</b></td><td>675,732</td><td class="hl">83.2</td><td class="hl">88.4</td><td class="hl">89.2</td><td class="hl">40.6</td><td class="hl">75.4</td></tr>
+      <tr><td>BC-Transformer (parameter-matched)</td><td>646,628</td><td>24.9</td><td>30.8</td><td>15.5</td><td>7.7</td><td>19.7</td></tr>
+      <tr><td>BC-RNN / LSTM (parameter-matched)</td><td>674,276</td><td>15.9</td><td>16.9</td><td>2.2</td><td>6.0</td><td>10.3</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">PredVLA: 14 seeds × 500 episodes per short suite, 7 seeds × 50 episodes on Long (Table 1). Baselines share the same frozen front end, demonstrations, action decoder and protocol (Table 2); the 4-suite means are computed from the table.</p>
+  <figure>
+    <img src="fig_suites.png" alt="One demonstration episode per LIBERO suite with the suite success rates: spatial 83.2, goal 88.4, object 89.2, long 40.6; 75.4 percent mean over the four suites.">
+    <figcaption>One demo episode per suite from the released checkpoints; the numbers are the benchmark statistics.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Where does the gain come from? <small>mechanism ladder</small></h2>
+  <p>Starting from the intact model we remove one mechanism at a time until only a plain BC-RNN remains (three short suites, 7 seeds). Replacing the predictive pathway with direct observation input is the largest single drop — about 70 % of the whole gap between PredVLA and the BC-RNN endpoint.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Rung</th><th>What changes</th><th>Mean (3 suites)</th><th>Δ vs. previous</th></tr></thead>
+    <tbody>
+      <tr><td>L0</td><td style="text-align:left">PredVLA (intact)</td><td class="hl">86.1</td><td>—</td></tr>
+      <tr><td>L1</td><td style="text-align:left">no online inference (same weights, open-loop)</td><td>77.3</td><td>−8.8</td></tr>
+      <tr><td>L2</td><td style="text-align:left">no free variables, no free energy</td><td>63.9</td><td>−13.3</td></tr>
+      <tr><td>L3</td><td style="text-align:left">no prediction: observations fed forward</td><td class="hl">11.6</td><td class="hl">−52.4</td></tr>
+      <tr><td>L4</td><td style="text-align:left">no time constants (τ = 1)</td><td>10.3</td><td>−1.2</td></tr>
+      <tr><td>L5</td><td style="text-align:left">PV-RNN cell → LSTM</td><td>14.5</td><td>+4.2</td></tr>
+      <tr><td>L6</td><td style="text-align:left">the existing BC-RNN baseline</td><td>11.7</td><td>−2.8</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <figure>
+    <img src="fig_ladder.png" alt="Bar chart of the mechanism ladder from L0 (86.1) to L6 (11.7); the L2 to L3 drop of 52.4 points is highlighted as about 70 percent of the L0 to L6 gap of 74.4.">
+  </figure>
+</section>
+
+<section>
+  <h2>Code, checkpoints and reproduction</h2>
+  <p>The <a href="https://github.com/hiroki-oist/PredVLA">GitHub repository</a> contains the training and evaluation code, the released checkpoints (PredVLA for all four suites, the parameter-matched baselines, the mechanism-ladder rungs and the ablations), the frozen feature caches, and the exact evaluation protocol (<code>predvla/protocol.py</code>). A plain <code>git clone</code> followed by <code>bash setup.sh</code> is enough to evaluate the checkpoints. Released under the MIT License.</p>
+</section>
+
+<section id="bibtex">
+  <h2>BibTeX</h2>
+<pre>@article{sawada2026predvla,
+  title   = {PredVLA: Predictive Sensorimotor Modeling for Sub-Million-Parameter Robot Manipulation},
+  author  = {Sawada, Hiroki and Kasahara, Shunichi},
+  journal = {arXiv preprint arXiv:2608.26673},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2608.26673}
+}</pre>
+</section>
+
+<footer>PredVLA · <a href="https://arxiv.org/abs/2608.26673">arXiv:2608.26673</a> · <a href="https://github.com/hiroki-oist/PredVLA">github.com/hiroki-oist/PredVLA</a></footer>
+</div>
+</body>
+</html>
