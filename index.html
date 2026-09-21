@@ -49,6 +49,8 @@
   .tablewrap { overflow-x:auto; }
   pre { background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px 18px; overflow-x:auto; font-size:13.5px; line-height:1.5; }
   .note { color:var(--ink2); font-size:14.5px; }
+  ol.refs { font-size:14px; color:var(--ink2); padding-left:22px; margin:14px 0 0; }
+  ol.refs li { margin-bottom:6px; }
   footer { margin-top:64px; color:var(--ink2); font-size:14px; text-align:center; border-top:1px solid var(--line); padding-top:22px; }
   a { color:var(--blue); }
   @media (max-width:720px) { .kpis { grid-template-columns:1fr; } }
@@ -138,6 +140,23 @@
   <figure>
     <img src="fig_ladder.png" alt="Bar chart of the mechanism ladder from L0 (86.1) to L6 (11.7); the L2 to L3 drop of 52.4 points is highlighted as about 70 percent of the L0 to L6 gap of 74.4.">
   </figure>
+</section>
+
+<section id="robustness">
+  <h2>Robustness under controlled perturbations <small>LIBERO-CTRL</small></h2>
+  <p>LIBERO-CTRL [1] perturbs a LIBERO rollout along one axis at a time — camera pose, lighting, robot initial pose, sensor noise, actuation gain, or a paraphrased instruction — at three calibrated severities (L1 &lt; L2 &lt; L3), and pairs every perturbed rollout with its own unperturbed twin (n = 400 per policy × axis × level). The figure compares PredVLA with four published VLA policies evaluated in the same benchmark: π<sub>0.5</sub> [2], OpenVLA-OFT [3], SmolVLA [4] and VLA-JEPA [5]. The simultaneous (all-six-axes) condition of the benchmark is omitted here.</p>
+  <figure>
+    <img src="fig_robustness.png" alt="Top: six panels, one per perturbation axis, showing success rate from nominal to severity L3 for PredVLA, pi0.5, OpenVLA-OFT, SmolVLA and VLA-JEPA. Bottom: bar chart of success at L3 divided by each policy's own nominal success per axis. PredVLA retains 79 percent of its nominal on camera, 97 on lighting, 85 on sensor and 79 on actuation, comparable to the multi-billion-parameter policies, but 33 percent on robot initial pose and 0 on language.">
+    <figcaption>Top: success rate per axis from each policy’s nominal score to L3. Bottom: success at L3 as a fraction of the policy’s own nominal score. Numbers from the LIBERO-CTRL results table [1]; PredVLA’s nominal score under that protocol is 79.3 %.</figcaption>
+  </figure>
+  <p>Two observations. First, on the four physical/photometric axes — camera, lighting, sensor and actuation — the 0.68M-parameter PredVLA keeps a fraction of its own nominal performance (79 / 97 / 85 / 79 % at L3) that is in the same range as the 2.8–7.5 B-parameter policies (e.g. camera L3: π<sub>0.5</sub> 58 %, OpenVLA-OFT 72 %, VLA-JEPA 68 %); on average over the five non-language axes it retains 74.5 %, the same as VLA-JEPA (74.5 %) and above SmolVLA (59.4 %). Robot-initial-pose perturbations hurt it more (33 % retained at L3, similar to SmolVLA). Second, PredVLA fails almost completely on the <em>language</em> axis (1.8 % at L1): its instruction pathway is a frozen sentence embedding reduced by PCA to 64 dimensions and trained on the ten canonical LIBERO instructions per suite, so a paraphrase falls outside what it has seen. This is a limitation of the current front end rather than of the predictive mechanism, and the obvious next step.</p>
+  <ol class="refs">
+    <li>H. Sawada and S. Kasahara. <em>Beyond Single-Axis Testing: Paired Evaluation of Compound Robustness in Vision-Language-Action Policies.</em> arXiv:2609.15940, 2026. <a href="https://arxiv.org/abs/2609.15940">arXiv</a> · <a href="https://github.com/hiroki-oist/LIBERO-ctrl">code</a></li>
+    <li>Physical Intelligence et al. <em>π<sub>0.5</sub>: a Vision-Language-Action Model with Open-World Generalization.</em> arXiv:2504.16054, 2025. <a href="https://arxiv.org/abs/2504.16054">arXiv</a></li>
+    <li>M. J. Kim, C. Finn, and P. Liang. <em>Fine-Tuning Vision-Language-Action Models: Optimizing Speed and Success.</em> arXiv:2502.19645, 2025. <a href="https://arxiv.org/abs/2502.19645">arXiv</a></li>
+    <li>M. Shukor et al. <em>SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotics.</em> arXiv:2506.01844, 2025. <a href="https://arxiv.org/abs/2506.01844">arXiv</a></li>
+    <li>J. Sun et al. <em>VLA-JEPA: Enhancing Vision-Language-Action Model with Latent World Model.</em> arXiv:2602.10098, 2026. <a href="https://arxiv.org/abs/2602.10098">arXiv</a></li>
+  </ol>
 </section>
 
 <section>
